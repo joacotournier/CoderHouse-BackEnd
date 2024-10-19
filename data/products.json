@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "title": "Spider-Man: Miles Morales",
+    "description": "Juego de acción y aventura en un mundo abierto basado en la ciudad de Nueva York.",
+    "code": "PS5-SMM",
+    "price": 59.99,
+    "status": true,
+    "stock": 100,
+    "category": "Acción",
+    "thumbnails": [
+      "https://image.api.playstation.com/vulcan/ap/rnd/202008/1020/PRfYtTZQsuj3ALrBXGL8MjAH.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Demon's Souls",
+    "description": "Un remake del clásico juego de rol y acción donde debes enfrentar desafiantes enemigos.",
+    "code": "PS5-DS",
+    "price": 69.99,
+    "status": true,
+    "stock": 50,
+    "category": "Rol",
+    "thumbnails": [
+      "https://image.api.playstation.com/vulcan/img/rnd/202011/1717/GemRaOZaCMhGxQ9dRhnQQyT5.png"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Ratchet & Clank: Rift Apart",
+    "description": "Un emocionante juego de plataformas en el que los héroes viajan entre dimensiones.",
+    "code": "PS5-RC",
+    "price": 59.99,
+    "status": true,
+    "stock": 75,
+    "category": "Plataformas",
+    "thumbnails": [
+      "https://image.api.playstation.com/vulcan/ap/rnd/202101/2921/5wUNGl8SSVEurJ2odm0hC1jJ.jpg"
+    ]
+  }
+]
