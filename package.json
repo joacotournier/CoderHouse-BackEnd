@@ -1,9 +1,11 @@
 {
   "name": "coderhouse-be",
   "version": "1.0.0",
-  "main": "CartManager.js",
+  "main": "app.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -11,6 +13,10 @@
   "description": "",
   "dependencies": {
     "express": "^4.21.1",
-    "fs": "^0.0.1-security"
+    "express-handlebars": "^7.1.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }

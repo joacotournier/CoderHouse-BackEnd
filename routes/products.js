@@ -1,6 +1,8 @@
 import express from "express";
+import ProductManager from "../managers/ProductManager.js";
+import { io } from "../app.js";
+
 const router = express.Router();
-import ProductManager from "../managers/ProductManager";
 const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
@@ -19,6 +21,8 @@ router.get("/:pid", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const newProduct = await productManager.addProduct(req.body);
+  const products = await productManager.getAllProducts();
+  io.emit("products", products);
   res.json(newProduct);
 });
 
@@ -36,7 +40,9 @@ router.put("/:pid", async (req, res) => {
 
 router.delete("/:pid", async (req, res) => {
   await productManager.deleteProduct(Number(req.params.pid));
+  const products = await productManager.getAllProducts();
+  io.emit("products", products);
   res.json({ message: "Product deleted" });
 });
 
-module.exports = router;
+export default router;
