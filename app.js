@@ -5,11 +5,11 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
 import dotenv from "dotenv";
-
+import { ProductModel } from "./models/product.model.js";
 import productRoutes from "./routes/products.js";
 import cartRoutes from "./routes/carts.js";
 import viewsRouter from "./routes/views.js";
-import { connectDB } from "./config/database.js";
+import { connectDB } from "./config/database.mjs";
 
 // Load environment variables
 dotenv.config();
