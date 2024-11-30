@@ -1,0 +1,130 @@
+{{!-- Product Detail with Modern UI --}}
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <div class="md:flex">
+        {{!-- Product Image --}}
+        <div class="md:flex-shrink-0 md:w-1/2">
+          <div class="h-96 relative">
+            {{#if product.thumbnails.[0]}}
+              <img class="w-full h-full object-cover" src="{{product.thumbnails.[0]}}" alt="{{product.title}}">
+            {{else}}
+              <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-400">No image available</span>
+              </div>
+            {{/if}}
+          </div>
+          {{#if product.thumbnails.length}}
+            <div class="p-4 flex gap-2 overflow-x-auto">
+              {{#each product.thumbnails}}
+                <img src="{{this}}" alt="Product thumbnail" class="h-20 w-20 object-cover rounded-md cursor-pointer hover:ring-2 hover:ring-indigo-500">
+              {{/each}}
+            </div>
+          {{/if}}
+        </div>
+
+        {{!-- Product Info --}}
+        <div class="p-8 md:w-1/2">
+          <div class="flex justify-between items-start">
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">{{product.title}}</h1>
+              <p class="mt-2 text-sm text-gray-500">Product Code: {{product.code}}</p>
+            </div>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{#if product.status}}bg-green-100 text-green-800{{else}}bg-red-100 text-red-800{{/if}}">
+              {{#if product.status}}In Stock{{else}}Out of Stock{{/if}}
+            </span>
+          </div>
+
+          <div class="mt-6">
+            <h2 class="text-lg font-medium text-gray-900">Description</h2>
+            <p class="mt-2 text-gray-500">{{product.description}}</p>
+          </div>
+
+          <div class="mt-8">
+            <div class="flex items-center justify-between">
+              <span class="text-3xl font-bold text-gray-900">${{product.price}}</span>
+              <span class="text-sm text-gray-500">{{product.stock}} units available</span>
+            </div>
+
+            <div class="mt-6">
+              <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+              <div class="mt-1 flex rounded-md shadow-sm">
+                <input type="number" name="quantity" id="quantity" min="1" max="{{product.stock}}" value="1"
+                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+              </div>
+            </div>
+
+            <div class="mt-6 space-y-3">
+              <button onclick="addToCartWithQuantity('{{product._id}}')"
+                      class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+                Add to Cart
+              </button>
+              <a href="/products" 
+                 class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+                Back to Products
+              </a>
+            </div>
+          </div>
+
+          {{!-- Additional Info --}}
+          <div class="mt-8 border-t border-gray-200 pt-8">
+            <h2 class="text-lg font-medium text-gray-900">Product Details</h2>
+            <dl class="mt-4 space-y-4">
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Category</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{product.category}}</dd>
+              </div>
+              <div>
+                <dt class="text-sm font-medium text-gray-500">Product Code</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{product.code}}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+async function addToCartWithQuantity(productId) {
+  try {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    if (isNaN(quantity) || quantity < 1) {
+      alert('Please enter a valid quantity');
+      return;
+    }
+
+    // Get the user's cart ID (you'll need to implement this based on your auth system)
+    let cartId = localStorage.getItem('cartId');
+    
+    if (!cartId) {
+      // Create a new cart if none exists
+      const response = await fetch('/api/carts', {
+        method: 'POST'
+      });
+      const data = await response.json();
+      cartId = data.payload._id;
+      localStorage.setItem('cartId', cartId);
+    }
+    
+    // Add the product to the cart
+    const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ quantity })
+    });
+    
+    if (response.ok) {
+      alert('Product added to cart successfully!');
+    } else {
+      throw new Error('Failed to add product to cart');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Failed to add product to cart');
+  }
+}
+</script>
